@@ -1,3 +1,4 @@
+import { SearchBar } from '../../components/common/SearchBar';
 import * as styles from './styles.css';
 
 const Home: React.FC = () => {
@@ -8,8 +9,20 @@ const Home: React.FC = () => {
         <p className={styles.subtitle}>
           Discover beautiful, free photos from talented photographers
         </p>
+        <SearchBar
+          value=""
+          onChange={() => {}}
+          onClear={() => {}}
+          placeholder="Search for photos..."
+        />
       </header>
-      <main>photos</main>
+
+      {/* Error case */}
+      {/* Photos */}
+      {/* No Photos */}
+      {/* Loading */}
+
+      {/* Photo detaild view modal */}
     </div>
   );
 };
