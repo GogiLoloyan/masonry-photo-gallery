@@ -76,3 +76,10 @@ export const loadingSpinner = style({
   borderRadius: '50%',
   animation: `${spin} 0.6s linear infinite`,
 });
+
+export const stats = style({
+  textAlign: 'center',
+  padding: theme.spacing.sm,
+  color: theme.colors.text,
+  fontSize: theme.fontSize.base,
+});

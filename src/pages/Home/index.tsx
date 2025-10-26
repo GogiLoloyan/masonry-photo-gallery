@@ -1,4 +1,4 @@
-import { SearchBar } from '../../components/common/SearchBar';
+import SearchBar from '../../components/common/SearchBar';
 import PhotoGrid from '../../components/PhotoGrid';
 import PhotoModal from '../../components/PhotoModal';
 
@@ -12,12 +12,7 @@ const Home: React.FC = () => {
         <p className={styles.subtitle}>
           Discover beautiful, free photos from talented photographers
         </p>
-        <SearchBar
-          value=""
-          onChange={() => null}
-          onClear={() => {}}
-          placeholder="Search for photos..."
-        />
+        <SearchBar />
       </header>
 
       <PhotoGrid />

@@ -1,20 +1,24 @@
 import { createContext, useContext } from 'react';
 
 import { PhotoStore } from './Photostore';
+import { SearchStore } from './Searchstore';
 import { UIStore } from './Uistore';
 
 export class RootStore {
   photoStore: PhotoStore;
   uiStore: UIStore;
+  searchStore: SearchStore;
 
   constructor() {
     this.photoStore = new PhotoStore(this);
     this.uiStore = new UIStore(this);
+    this.searchStore = new SearchStore(this);
   }
 
   reset() {
     this.photoStore.reset();
     this.uiStore.reset();
+    this.searchStore.reset();
   }
 }
 
