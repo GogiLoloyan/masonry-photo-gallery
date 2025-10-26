@@ -18,3 +18,9 @@ export interface Photo {
   avgColor: string;
   blurHash?: string;
 }
+
+export interface PhotoDetails extends Photo {
+  tags?: string[];
+  description?: string;
+  createdAt?: string;
+}

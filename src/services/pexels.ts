@@ -1,41 +1,89 @@
-import axios, { type AxiosInstance, AxiosError } from 'axios';
+import axios, { type AxiosInstance } from 'axios';
+
 import { ITEMS_PER_PAGE, PEXELS_API_KEY, PEXELS_BASE_URL } from '../constants/config';
-import type { Photo } from '../types/app';
-import type {
-  PexelsCuratedResponse,
-  PexelsError,
-  PexelsPhoto,
-  PexelsSearchResponse,
-} from '../types/pexels';
+import type { Photo, PhotoDetails } from '../types/app';
+import type { PexelsPhoto, PexelsResponse } from '../types/pexels';
 
 class PexelsService {
   private api: AxiosInstance;
+  private readonly API_KEY =
+    import.meta.env.VITE_PEXELS_API_KEY || PEXELS_API_KEY || 'YOUR_API_KEY_HERE';
 
   constructor() {
     this.api = axios.create({
       baseURL: PEXELS_BASE_URL,
       headers: {
-        Authorization: PEXELS_API_KEY,
+        Authorization: this.API_KEY,
       },
+      timeout: 10000,
     });
 
     // Add response interceptor for error handling
     this.api.interceptors.response.use(
       (response) => response,
-      (error: AxiosError<PexelsError>) => {
+      (error) => {
         if (error.response) {
-          const pexelsError: PexelsError = {
-            error: error.response.data?.error || 'Unknown error occurred',
-            status: error.response.status,
-          };
-          return Promise.reject(pexelsError);
+          switch (error.response.status) {
+            case 429:
+              throw new Error('Rate limit exceeded. Please try again later.');
+            case 401:
+              throw new Error('Invalid API key. Please check your configuration.');
+            case 404:
+              throw new Error('Resource not found.');
+            default:
+              throw new Error(`API error: ${error.response.statusText}`);
+          }
+        } else if (error.request) {
+          throw new Error('Network error. Please check your connection.');
         }
-        return Promise.reject(error);
+        throw error;
       }
     );
   }
 
-  // Transform Pexels photo to our Photo type
+  // --- Get photos
+  async getPhotos(
+    page: number = 1,
+    perPage: number = ITEMS_PER_PAGE,
+    query?: string,
+    signal?: AbortSignal
+  ): Promise<{
+    photos: Photo[];
+    hasMore: boolean;
+    totalResults: number;
+  }> {
+    try {
+      const endpoint = query ? '/search' : '/curated';
+      const params = query ? { query, page, per_page: perPage } : { page, per_page: perPage };
+
+      const response = await this.api.get<PexelsResponse>(endpoint, {
+        params,
+        signal,
+      });
+
+      return {
+        photos: response.data.photos.map(this.transformPhoto),
+        hasMore: !!response.data.next_page,
+        totalResults: response.data.total_results,
+      };
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        throw error;
+      }
+      throw this.handleError(error);
+    }
+  }
+
+  // -- Get single photo detals
+  async getPhotoDetails(id: number): Promise<PhotoDetails> {
+    try {
+      const response = await this.api.get<PhotoDetails>(`/photos/${id}`);
+      return this.transformPhotoDetails(response.data);
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
   private transformPhoto(photo: PexelsPhoto): Photo {
     return {
       id: photo.id,
@@ -56,51 +104,21 @@ class PexelsService {
     };
   }
 
-  // Get curated photos
-  async getCuratedPhotos(
-    page: number = 1,
-    perPage: number = ITEMS_PER_PAGE
-  ): Promise<{
-    photos: Photo[];
-    hasMore: boolean;
-    totalResults?: number;
-  }> {
-    const response = await this.api.get<PexelsCuratedResponse>('/curated', {
-      params: { page, per_page: perPage },
-    });
-
+  private transformPhotoDetails(photo: any): PhotoDetails {
     return {
-      photos: response.data.photos.map(this.transformPhoto),
-      hasMore: !!response.data.next_page,
-      totalResults: response.data.total_results,
+      ...this.transformPhoto(photo),
+      // Additional details that might be available
+      tags: photo.tags || [],
+      description: photo.description || photo.alt || '',
+      createdAt: photo.created_at || new Date().toISOString(),
     };
   }
 
-  // Search photos
-  async searchPhotos(
-    query: string,
-    page: number = 1,
-    perPage: number = ITEMS_PER_PAGE
-  ): Promise<{
-    photos: Photo[];
-    hasMore: boolean;
-    totalResults: number;
-  }> {
-    const response = await this.api.get<PexelsSearchResponse>('/search', {
-      params: { query, page, per_page: perPage },
-    });
-
-    return {
-      photos: response.data.photos.map(this.transformPhoto),
-      hasMore: !!response.data.next_page,
-      totalResults: response.data.total_results,
-    };
-  }
-
-  // Get single photo
-  async getPhoto(id: number): Promise<Photo> {
-    const response = await this.api.get<PexelsPhoto>(`/photos/${id}`);
-    return this.transformPhoto(response.data);
+  private handleError(error: any): Error {
+    if (error instanceof Error) {
+      return error;
+    }
+    return new Error('An unexpected error occurred');
   }
 }
 

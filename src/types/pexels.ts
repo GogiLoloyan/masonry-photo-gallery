@@ -32,16 +32,11 @@ export interface PexelsSearchResponse {
   prev_page?: string;
 }
 
-export interface PexelsCuratedResponse {
+export interface PexelsResponse {
   photos: PexelsPhoto[];
   page: number;
   per_page: number;
   total_results: number;
   next_page?: string;
   prev_page?: string;
-}
-
-export interface PexelsError {
-  error: string;
-  status: number;
 }
