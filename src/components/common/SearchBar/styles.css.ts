@@ -25,6 +25,7 @@ export const input = style({
   width: '100%',
   padding: `${theme.spacing.md} ${theme.spacing.xxl} ${theme.spacing.md} ${theme.spacing.xxl}`,
   fontSize: theme.fontSize.base,
+  color: theme.colors.text,
   border: `2px solid ${theme.colors.border}`,
   borderRadius: theme.borderRadius.full,
   backgroundColor: theme.colors.background,
