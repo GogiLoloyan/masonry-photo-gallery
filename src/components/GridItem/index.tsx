@@ -58,15 +58,17 @@ const GridItem = ({ photo, position, onClick }: GridItemProps) => {
       tabIndex={0}
       aria-label={photo.alt || `Photo by ${photo.photographer}`}
     >
-      {!imageLoaded && (
+      {/* Always show placeholder as background */}
+      <div className={styles.placeholder} style={{ backgroundColor: photo.avgColor || '#f0f0f0' }}>
         <div
-          className={styles.placeholder}
-          style={{ backgroundColor: photo.avgColor || '#f0f0f0' }}
-        >
-          <div className={styles.shimmerEffect} />
-        </div>
-      )}
+          className={styles.shimmerEffect}
+          style={{
+            opacity: imageLoaded ? 0 : 1,
+          }}
+        />
+      </div>
 
+      {/* Image fades in on top of placeholder */}
       {imageSrc && (
         <picture>
           <source
