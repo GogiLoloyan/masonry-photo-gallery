@@ -85,9 +85,9 @@ const SearchBar = () => {
         )}
       </div>
 
-      {photoStore.totalResults > 0 && searchStore.hasActiveSearch && !searchStore.isSearching && (
+      {photoStore.totalResults > 0 && photoStore.activeSearchQuery && !searchStore.isSearching && (
         <div className={styles.stats}>
-          Found {photoStore.totalResults} results for "{searchStore.searchQuery}"
+          Found {photoStore.totalResults} results for "{photoStore.activeSearchQuery}"
         </div>
       )}
     </div>

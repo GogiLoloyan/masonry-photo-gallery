@@ -18,6 +18,7 @@ export class PhotoStore {
   isLoadingMore = false;
   error: string | null = null;
   totalResults = 0;
+  activeSearchQuery = ''; // The query that these results are for
 
   private photoDetailsCache: Map<number, PhotoDetails> = new Map();
   private abortController: AbortController | null = null;
@@ -36,6 +37,7 @@ export class PhotoStore {
       isLoadingMore: observable,
       error: observable,
       totalResults: observable,
+      activeSearchQuery: observable,
 
       // --- Computed values
       isInitialLoading: computed,
@@ -70,6 +72,7 @@ export class PhotoStore {
         this.page = 1;
         this.hasMore = true;
         this.isLoading = true;
+        this.totalResults = 0; // Reset total results on new search
       } else {
         this.isLoadingMore = true;
       }
@@ -95,6 +98,7 @@ export class PhotoStore {
         }
 
         this.totalResults = response.totalResults;
+        this.activeSearchQuery = searchQuery; // Update active query when results arrive
         this.hasMore = this.page * this.perPage < response.totalResults;
         this.page += 1;
         this.isLoading = false;
@@ -176,6 +180,7 @@ export class PhotoStore {
     this.isLoadingMore = false;
     this.error = null;
     this.totalResults = 0;
+    this.activeSearchQuery = '';
     this.photoDetailsCache.clear();
   }
 }
