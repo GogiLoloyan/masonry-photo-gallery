@@ -27,7 +27,7 @@ export const container = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  animation: `${fadeIn} 0.2s ease-out`,
+  animation: `${fadeIn} ${theme.transitions.fast}`,
 });
 
 export const backdrop = style({
@@ -47,7 +47,7 @@ export const content = style({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  animation: `${slideUp} 0.3s ease-out`,
+  animation: `${slideUp} ${theme.transitions.normal}`,
 });
 
 export const header = style({
@@ -64,9 +64,9 @@ export const header = style({
 });
 
 export const closeButton = style({
-  width: '48px',
-  height: '48px',
-  borderRadius: '50%',
+  width: theme.spacing.xxl,
+  height: theme.spacing.xxl,
+  borderRadius: theme.borderRadius.full,
   backgroundColor: 'rgba(0, 0, 0, 0.5)',
   backdropFilter: 'blur(10px)',
   border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -103,12 +103,36 @@ export const imageContainer = style({
   },
 });
 
+export const placeholder = style({
+  position: 'absolute',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius: theme.borderRadius.lg,
+  maxWidth: '90vw',
+  maxHeight: '70vh',
+});
+
+const spin = keyframes({
+  '0%': { transform: 'rotate(0deg)' },
+  '100%': { transform: 'rotate(360deg)' },
+});
+
+export const spinner = style({
+  width: theme.spacing.xxl,
+  height: theme.spacing.xxl,
+  border: '3px solid rgba(255, 255, 255, 0.1)',
+  borderTopColor: 'white',
+  borderRadius: theme.borderRadius.full,
+  animation: `${spin} 0.8s linear infinite`,
+});
+
 export const image = style({
   maxWidth: '90vw',
   maxHeight: '70vh',
   objectFit: 'contain',
   borderRadius: theme.borderRadius.lg,
-  transition: 'opacity 0.3s ease',
+  transition: `opacity ${theme.transitions.normal}`,
   userSelect: 'none',
 });
 
@@ -124,7 +148,7 @@ export const info = style({
   '@media': {
     '(max-width: 768px)': {
       padding: theme.spacing.lg,
-      paddingTop: '80px',
+      paddingTop: theme.spacing.xxl,
     },
   },
 });

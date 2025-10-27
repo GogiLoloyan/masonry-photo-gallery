@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import type { PhotoDetails } from '../../types/app';
 import * as styles from './styles.css';
 
@@ -7,6 +9,12 @@ interface PhotoDetailViewProps {
 }
 
 const PhotoDetailView = ({ photo, onClose }: PhotoDetailViewProps) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
@@ -34,10 +42,25 @@ const PhotoDetailView = ({ photo, onClose }: PhotoDetailViewProps) => {
 
         {/* Photo */}
         <div className={styles.imageContainer} onClick={handleBackdropClick}>
+          {!imageLoaded && (
+            <div
+              className={styles.placeholder}
+              style={{
+                backgroundColor: photo.avgColor || '#f0f0f0',
+                aspectRatio: `${photo.width} / ${photo.height}`,
+              }}
+            >
+              <div className={styles.spinner} />
+            </div>
+          )}
           <img
             src={photo.src.original}
             alt={photo.alt || `Photo by ${photo.photographer}`}
             className={styles.image}
+            onLoad={handleImageLoad}
+            style={{
+              opacity: imageLoaded ? 1 : 0,
+            }}
           />
         </div>
 

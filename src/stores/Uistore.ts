@@ -1,4 +1,4 @@
-import { action, computed, makeObservable, observable } from 'mobx';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import type { RootStore } from './RootStore';
 
 export class UIStore {
@@ -25,6 +25,9 @@ export class UIStore {
       closePhotoModal: action,
       reset: action,
     });
+
+    // --- Initialize reactions
+    this.setupModalReactions();
   }
 
   // --- Computed values
@@ -63,4 +66,28 @@ export class UIStore {
       this.closePhotoModal();
     }
   };
+
+  // --- Setup modal-related reactions
+  private setupModalReactions() {
+    reaction(
+      () => this.hasOpenModal,
+      (isOpen) => {
+        if (isOpen) {
+          window.addEventListener('keydown', this.escapeCloseHandler);
+
+          // --- Prevent body scroll when modal is open
+          if (typeof document !== 'undefined') {
+            document.body.style.overflow = 'hidden';
+          }
+        } else {
+          window.removeEventListener('keydown', this.escapeCloseHandler);
+
+          // --- Restore body scroll
+          if (typeof document !== 'undefined') {
+            document.body.style.overflow = '';
+          }
+        }
+      }
+    );
+  }
 }
