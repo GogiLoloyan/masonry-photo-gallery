@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
-import SearchBar from '../../components/common/SearchBar';
 import PhotoGrid from '../../components/PhotoGrid';
 import PhotoModal from '../../components/PhotoModal';
+import SearchBar from '../../components/SearchBar';
 import { useStores } from '../../stores/RootStore';
 
 import * as styles from './styles.css';
