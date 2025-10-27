@@ -24,3 +24,20 @@ export interface PhotoDetails extends Photo {
   description?: string;
   createdAt?: string;
 }
+
+export interface VirtualizedItem {
+  index: number;
+  photo: Photo;
+  top: number;
+  left: number;
+  width: number;
+  height: number;
+  column: number;
+}
+
+export interface GridDimensions {
+  containerWidth: number;
+  columnWidth: number;
+  columnCount: number;
+  gutterSize: number;
+}

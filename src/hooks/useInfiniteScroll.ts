@@ -1,22 +1,24 @@
 import { useCallback, useEffect, useState } from 'react';
+
+import { INTERSECTION_ROOT_MARGIN, INTERSECTION_THRESHOLD } from '../constants/config';
 import { useIntersectionObserver } from './useIntersectionObserver';
 
 interface UseInfiniteScrollProps {
   onLoadMore: () => void | Promise<void>;
   hasMore: boolean;
   loading?: boolean;
-  threshold?: string;
+  rootMargin?: string;
 }
 
 export function useInfiniteScroll({
   onLoadMore,
   hasMore,
   loading = false,
-  threshold = '100px',
+  rootMargin = INTERSECTION_ROOT_MARGIN,
 }: UseInfiniteScrollProps) {
   const [triggerRef, isIntersecting] = useIntersectionObserver<HTMLDivElement>({
-    rootMargin: threshold,
-    threshold: 0.1,
+    rootMargin,
+    threshold: INTERSECTION_THRESHOLD,
   });
 
   const [isLoading, setIsLoading] = useState(false);
