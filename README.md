@@ -30,12 +30,21 @@ npm run dev
 ### Available Scripts
 
 ```bash
+# Development
 npm run dev          # Start development server
 npm run build        # Build for production
 npm run preview      # Preview production build
+
+# Code Quality
 npm run lint         # Run ESLint
 npm run format       # Format code with Prettier
 npm run format:check # Check code formatting
+
+# Testing
+npm run test         # Run tests in watch mode
+npm run test:ui      # Open Vitest UI for interactive testing
+npm run test:coverage # Generate test coverage report
+npm run test:run     # Run tests once (for CI/CD)
 ```
 
 ## 📋 Features
@@ -204,16 +213,27 @@ Dynamic column count based on viewport:
 
 ## 🧪 Testing Strategy
 
-### Unit Tests (Planned)
-- Grid calculation utilities
-- Store actions and computed values
-- Custom hooks logic
-- Service layer mocking
+### Unit Tests ✅
+- **Grid Utilities**: Comprehensive tests for masonry layout calculations, virtualization logic, and responsive column management
+- **Store Testing**: MobX store actions, computed values, and state management
+- **Custom Hooks**: Tests for useVirtualization, useInfiniteScroll, and useImageOptimization
+- **Service Layer**: API service mocking and error handling scenarios
+- **Component Testing**: Isolated component behavior and user interactions
+- **Performance Utilities**: Debounce and throttle function testing
 
-### Integration Tests (Planned)
-- Component interactions
-- Store-component integration
-- API error handling
+### Test Infrastructure
+- **Framework**: Vitest with React Testing Library
+- **Coverage**: Configured with coverage reports (text, JSON, HTML)
+- **Mocking**: Complete setup for IntersectionObserver, ResizeObserver, and API calls
+- **Test Utilities**: Custom render functions with providers
+
+### Running Tests
+```bash
+npm run test          # Run tests in watch mode
+npm run test:ui       # Open Vitest UI
+npm run test:coverage # Generate coverage report
+npm run test:run      # Run tests once (CI mode)
+```
 
 ### Performance Testing
 - Lighthouse CI for automated checks
