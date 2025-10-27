@@ -1,11 +1,33 @@
-import { GUTTER_SIZE, MIN_COLUMN_WIDTH } from '@/constants/config';
+import {
+  BREAKPOINTS,
+  DESKTOP_COLUMNS,
+  GUTTER_SIZE,
+  LARGE_DESKTOP_COLUMNS,
+  MOBILE_COLUMNS,
+  TABLET_COLUMNS,
+} from '@/constants/config';
 import type { GridDimensions, Photo, VirtualizedItem } from '@/types/app';
+
+/**
+ * Determines column count based on container width and breakpoints
+ */
+function getColumnCount(containerWidth: number): number {
+  if (containerWidth >= BREAKPOINTS.desktop) {
+    return LARGE_DESKTOP_COLUMNS;
+  } else if (containerWidth >= BREAKPOINTS.tablet) {
+    return DESKTOP_COLUMNS;
+  } else if (containerWidth >= BREAKPOINTS.mobile) {
+    return TABLET_COLUMNS;
+  } else {
+    return MOBILE_COLUMNS;
+  }
+}
 
 /**
  * Calculates grid dimensions based on container width
  */
 export function calculateGridDimensions(containerWidth: number): GridDimensions {
-  const columnCount = Math.max(1, Math.floor(containerWidth / MIN_COLUMN_WIDTH));
+  const columnCount = getColumnCount(containerWidth);
   const totalGutterWidth = GUTTER_SIZE * (columnCount - 1);
   const columnWidth = (containerWidth - totalGutterWidth) / columnCount;
 
