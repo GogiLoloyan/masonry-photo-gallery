@@ -9,11 +9,6 @@ export const gridItem = style({
   overflow: 'hidden',
   backgroundColor: theme.colors.surface,
   transition: `transform ${theme.transitions.fast}, box-shadow ${theme.transitions.fast}`,
-  ':hover': {
-    transform: 'translateY(-4px)',
-    boxShadow: theme.shadows.xl,
-    zIndex: 10,
-  },
   ':focus': {
     outline: `2px solid ${theme.colors.primary}`,
     outlineOffset: theme.spacing.xs,
@@ -21,6 +16,16 @@ export const gridItem = style({
   selectors: {
     '&:focus:not(:focus-visible)': {
       outline: 'none',
+    },
+  },
+  '@media': {
+    // Only apply hover effects on devices with hover capability (not touch devices)
+    '(hover: hover) and (pointer: fine)': {
+      ':hover': {
+        transform: 'translateY(-4px)',
+        boxShadow: theme.shadows.xl,
+        zIndex: 10,
+      },
     },
   },
 });
@@ -79,9 +84,14 @@ export const overlay = style({
   padding: `${theme.spacing.lg} ${theme.spacing.md} ${theme.spacing.md}`,
   transform: 'translateY(100%)',
   transition: `transform ${theme.transitions.normal}`,
-  selectors: {
-    [`${gridItem}:hover &`]: {
-      transform: 'translateY(0)',
+  '@media': {
+    // Only show overlay on hover for devices with hover capability (not touch devices)
+    '(hover: hover) and (pointer: fine)': {
+      selectors: {
+        [`${gridItem}:hover &`]: {
+          transform: 'translateY(0)',
+        },
+      },
     },
   },
 });

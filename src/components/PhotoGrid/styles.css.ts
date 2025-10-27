@@ -67,6 +67,10 @@ export const loadingIndicator = style({
 export const spinner = style({
   width: '1.5rem',
   height: '1.5rem',
+  minWidth: '1.5rem',
+  minHeight: '1.5rem',
+  maxWidth: '1.5rem',
+  maxHeight: '1.5rem',
   border: `2px solid ${theme.colors.border}`,
   borderTopColor: theme.colors.primary,
   borderRadius: '50%',
