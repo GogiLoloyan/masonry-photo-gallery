@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import { BREAKPOINTS } from '../../constants/config';
-import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
-import type { Photo } from '../../types/app';
-import { getOptimalImageSrc } from '../../utils/image';
+import { BREAKPOINTS } from '@/constants/config';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
+import type { Photo } from '@/types/app';
+import { getOptimalImageSrc } from '@/utils/image';
 import * as styles from './styles.css';
 
 interface GridItemProps {

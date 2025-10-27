@@ -1,8 +1,8 @@
 import axios, { type AxiosInstance } from 'axios';
 
-import { ITEMS_PER_PAGE, PEXELS_API_KEY, PEXELS_BASE_URL } from '../constants/config';
-import type { Photo, PhotoDetails } from '../types/app';
-import type { PexelsPhoto, PexelsResponse } from '../types/pexels';
+import { ITEMS_PER_PAGE, PEXELS_API_KEY, PEXELS_BASE_URL } from '@/constants/config';
+import type { Photo, PhotoDetails } from '@/types/app';
+import type { PexelsPhoto, PexelsResponse } from '@/types/pexels';
 
 class PexelsService {
   private api: AxiosInstance;

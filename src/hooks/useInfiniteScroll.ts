@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { INTERSECTION_ROOT_MARGIN, INTERSECTION_THRESHOLD } from '../constants/config';
+import { INTERSECTION_ROOT_MARGIN, INTERSECTION_THRESHOLD } from '@/constants/config';
 import { useIntersectionObserver } from './useIntersectionObserver';
 
 interface UseInfiniteScrollProps {

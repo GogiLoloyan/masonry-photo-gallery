@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite';
-import { useStores } from '../../stores/RootStore';
-import PhotoDetailView from '../PhotoDetailView';
+
+import PhotoDetailView from '@/components/PhotoDetailView';
+import { useStores } from '@/stores/RootStore';
 
 const PhotoModal = () => {
   const { uiStore, photoStore } = useStores();

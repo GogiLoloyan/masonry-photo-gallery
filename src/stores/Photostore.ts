@@ -1,8 +1,8 @@
 import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 
-import { ITEMS_PER_PAGE } from '../constants/config';
-import { pexelsService } from '../services/pexels';
-import type { Photo, PhotoDetails } from '../types/app';
+import { ITEMS_PER_PAGE } from '@/constants/config';
+import { pexelsService } from '@/services/pexels';
+import type { Photo, PhotoDetails } from '@/types/app';
 import type { RootStore } from './RootStore';
 
 export class PhotoStore {

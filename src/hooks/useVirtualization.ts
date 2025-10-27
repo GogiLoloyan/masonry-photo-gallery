@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 
-import { VIRTUALIZATION_BUFFER } from '../constants/config';
-import type { Photo, VirtualizedItem } from '../types/app';
+import { VIRTUALIZATION_BUFFER } from '@/constants/config';
+import type { Photo, VirtualizedItem } from '@/types/app';
 import {
   calculateGridDimensions,
   calculateGridHeight,
   calculateMasonryLayout,
   getVisibleItems,
-} from '../utils/grid';
+} from '@/utils/grid';
 
 interface UseVirtualizationProps {
   photos: Photo[];

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { useRef } from 'react';
 
-import { useStores } from '../../stores/RootStore';
+import { useStores } from '@/stores/RootStore';
 import * as styles from './styles.css';
 
 const SearchBar = () => {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import type { PhotoDetails } from '../../types/app';
+import type { PhotoDetails } from '@/types/app';
 import * as styles from './styles.css';
 
 interface PhotoDetailViewProps {

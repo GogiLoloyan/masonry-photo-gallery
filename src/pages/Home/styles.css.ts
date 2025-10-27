@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css';
 
-import { mobile } from '../../styles/responsive';
-import { theme } from '../../styles/theme.css';
+import { mobile } from '@/styles/responsive';
+import { theme } from '@/styles/theme.css';
 
 export const container = style({
   minHeight: '100vh',

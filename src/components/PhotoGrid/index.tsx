@@ -1,11 +1,12 @@
 import { observer } from 'mobx-react-lite';
 import { useEffect, useRef } from 'react';
 
-import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
-import { useVirtualization } from '../../hooks/useVirtualization';
-import { useStores } from '../../stores/RootStore';
-import type { Photo } from '../../types/app';
-import GridItem from '../GridItem';
+import GridItem from '@/components/GridItem';
+import { useInfiniteScroll } from '@/hooks/useInfiniteScroll';
+import { useVirtualization } from '@/hooks/useVirtualization';
+import { useStores } from '@/stores/RootStore';
+import type { Photo } from '@/types/app';
+
 import * as styles from './styles.css';
 
 const PhotoGrid = () => {

@@ -1,6 +1,6 @@
 import { keyframes, style } from '@vanilla-extract/css';
 
-import { theme } from '../../styles/theme.css';
+import { theme } from '@/styles/theme.css';
 
 export const gridItem = style({
   position: 'absolute',

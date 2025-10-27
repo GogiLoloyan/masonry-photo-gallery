@@ -1,5 +1,5 @@
-import { GUTTER_SIZE, MIN_COLUMN_WIDTH } from '../constants/config';
-import type { GridDimensions, Photo, VirtualizedItem } from '../types/app';
+import { GUTTER_SIZE, MIN_COLUMN_WIDTH } from '@/constants/config';
+import type { GridDimensions, Photo, VirtualizedItem } from '@/types/app';
 
 /**
  * Calculates grid dimensions based on container width

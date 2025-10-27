@@ -1,5 +1,6 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import { throttle } from '../utils/performance';
+
+import { throttle } from '@/utils/performance';
 import type { RootStore } from './RootStore';
 
 export class UIStore {
