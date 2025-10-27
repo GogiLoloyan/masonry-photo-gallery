@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
 import { useVirtualization } from '../../hooks/useVirtualization';
@@ -13,21 +13,16 @@ const PhotoGrid = () => {
 
   const containerRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [containerWidth, setContainerWidth] = useState(0);
 
   /**
-   * Update container width
+   * Set container element in uiStore
    */
   useEffect(() => {
-    const updateWidth = () => {
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth);
-      }
-    };
+    uiStore.setContainerElement(containerRef.current);
 
-    updateWidth();
-    window.addEventListener('resize', updateWidth);
-    return () => window.removeEventListener('resize', updateWidth);
+    return () => {
+      uiStore.setContainerElement(null);
+    };
   }, []);
 
   const { triggerRef } = useInfiniteScroll({
@@ -37,19 +32,23 @@ const PhotoGrid = () => {
     rootMargin: '800px',
   });
 
-  const { visibleItems, totalHeight, handleScroll } = useVirtualization({
+  const { visibleItems, totalHeight } = useVirtualization({
     photos: photoStore.photos,
-    containerWidth,
+    scrollTop: uiStore.scrollTop,
+    viewportHeight: uiStore.viewportHeight,
+    containerWidth: uiStore.containerWidth,
   });
 
   /**
    * Handle scroll events
    */
   const handleScrollEvent = (e: React.UIEvent<HTMLDivElement>) => {
-    const target = e.currentTarget;
-    handleScroll(target.scrollTop);
+    uiStore.handleScroll(e.currentTarget.scrollTop);
   };
 
+  /**
+   * Open modal on photo click
+   */
   const handlePhotoClick = (photo: Photo) => {
     uiStore.openPhotoModal(photo.id);
   };
