@@ -1,13 +1,12 @@
 import axios, { type AxiosInstance } from 'axios';
 
-import { ITEMS_PER_PAGE, PEXELS_API_KEY, PEXELS_BASE_URL } from '@/constants/config';
+import { ITEMS_PER_PAGE, PEXELS_BASE_URL } from '@/constants/config';
 import type { Photo, PhotoDetails } from '@/types/app';
 import type { PexelsPhoto, PexelsResponse } from '@/types/pexels';
 
 class PexelsService {
   private api: AxiosInstance;
-  private readonly API_KEY =
-    import.meta.env.VITE_PEXELS_API_KEY || PEXELS_API_KEY || 'YOUR_API_KEY_HERE';
+  private readonly API_KEY = import.meta.env.VITE_PEXELS_API_KEY || 'YOUR_API_KEY_HERE';
 
   constructor() {
     this.api = axios.create({
