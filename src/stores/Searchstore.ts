@@ -7,7 +7,7 @@ export class SearchStore {
   // --- Observable state
   searchQuery = '';
   isSearching = false;
-  searchDebounceTimer: number | null = null;
+  searchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
   debounceDelay = 500;
 
   constructor(rootStore: RootStore) {

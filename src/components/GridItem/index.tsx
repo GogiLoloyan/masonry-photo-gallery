@@ -54,7 +54,7 @@ const GridItem = ({ photo, position, onClick }: GridItemProps) => {
       }}
       onClick={onClick}
       onKeyDown={handleKeyDown}
-      role="button"
+      role="article"
       tabIndex={0}
       aria-label={photo.alt || `Photo by ${photo.photographer}`}
     >

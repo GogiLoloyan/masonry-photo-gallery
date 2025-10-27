@@ -10,7 +10,8 @@ const SearchBar = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    searchStore.setSearchQuery(e.target.value);
+    const value = e.target.value.trim();
+    searchStore.setSearchQuery(value);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -27,69 +28,90 @@ const SearchBar = () => {
     inputRef.current?.focus();
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    searchStore.executeSearch();
+  };
+
   return (
     <div className={styles.container}>
-      <div className={styles.inputWrapper}>
-        {/* Search Icon */}
-        <svg className={styles.searchIcon} width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path
-            d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-          <path
-            d="M19 19L14.65 14.65"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-        </svg>
-
-        <input
-          ref={inputRef}
-          type="text"
-          value={searchStore.searchQuery}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-          placeholder="Search for photos..."
-          className={styles.input}
-          aria-label="Search photos"
-          autoComplete="off"
-          autoCorrect="off"
-          autoCapitalize="off"
-          spellCheck={false}
-        />
-
-        {/* Clear button or loading indicator */}
-        {searchStore.searchQuery && (
-          <button
-            onClick={handleClear}
-            className={styles.clearButton}
-            aria-label="Clear search"
-            type="button"
+      <form role="search" onSubmit={handleSubmit} style={{ width: '100%' }}>
+        <div className={styles.inputWrapper}>
+          {/* Search Icon */}
+          <svg
+            className={styles.searchIcon}
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            data-testid="search-icon"
           >
-            {searchStore.isSearching ? (
-              <div className={styles.loadingSpinner} />
-            ) : (
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M15 5L5 15M5 5L15 15"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            )}
-          </button>
-        )}
-      </div>
+            <path
+              d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <path
+              d="M19 19L14.65 14.65"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          </svg>
+
+          <input
+            ref={inputRef}
+            type="text"
+            value={searchStore.searchQuery}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            placeholder="Search for photos..."
+            className={styles.input}
+            aria-label="Search photos"
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
+            disabled={searchStore.isSearching}
+          />
+
+          {/* Clear button or loading indicator */}
+          {searchStore.searchQuery && (
+            <button
+              onClick={handleClear}
+              className={styles.clearButton}
+              aria-label="Clear search"
+              type="button"
+            >
+              {searchStore.isSearching ? (
+                <div className={styles.loadingSpinner} data-testid="search-loading" />
+              ) : (
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M15 5L5 15M5 5L15 15"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              )}
+            </button>
+          )}
+        </div>
+      </form>
 
       {photoStore.totalResults > 0 && photoStore.activeSearchQuery && !searchStore.isSearching && (
         <div className={styles.stats}>
           Found {photoStore.totalResults} results for "{photoStore.activeSearchQuery}"
         </div>
       )}
+
+      {photoStore.totalResults === 0 &&
+        photoStore.activeSearchQuery &&
+        !searchStore.isSearching && (
+          <div className={styles.stats}>No results found for "{photoStore.activeSearchQuery}"</div>
+        )}
     </div>
   );
 };

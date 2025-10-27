@@ -73,11 +73,14 @@ const PhotoGrid = () => {
       className={styles.scrollContainer}
       onScroll={handleScrollEvent}
       style={{ height: '100vh', overflowY: 'auto' }}
+      role="region"
+      aria-label="Photo grid"
     >
       <div
         ref={containerRef}
         className={styles.gridContainer}
         style={{ height: totalHeight, position: 'relative' }}
+        data-testid="grid-container"
       >
         {visibleItems.map((item) => (
           <GridItem
@@ -95,7 +98,7 @@ const PhotoGrid = () => {
       </div>
 
       {/* Infinite scroll trigger */}
-      {photoStore.hasMore && <div ref={triggerRef} style={{ height: '1px' }} />}
+      {photoStore.hasMore && <div ref={triggerRef} style={{ height: '1px' }} data-testid="infinite-scroll-trigger" />}
 
       {photoStore.isLoadingMore && (
         <div className={styles.loadingIndicator}>

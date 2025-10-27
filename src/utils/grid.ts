@@ -93,7 +93,7 @@ export function getVisibleItems(
 
   return items.filter((item) => {
     const itemBottom = item.top + item.height;
-    return itemBottom >= viewportTop && item.top <= viewportBottom;
+    return itemBottom > viewportTop && item.top <= viewportBottom;
   });
 }
 
