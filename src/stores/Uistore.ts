@@ -1,9 +1,10 @@
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
 
 import { throttle } from '@/utils/performance';
+import { BaseStore } from './BaseStore';
 import type { RootStore } from './RootStore';
 
-export class UIStore {
+export class UIStore extends BaseStore {
   rootStore: RootStore;
 
   // --- Modal state
@@ -25,6 +26,7 @@ export class UIStore {
   throttledUpdateScroll: (value: number) => void;
 
   constructor(rootStore: RootStore) {
+    super();
     this.rootStore = rootStore;
 
     makeObservable(this, {
@@ -108,25 +110,28 @@ export class UIStore {
 
   // --- Setup modal-related reactions
   private setupModalReactions() {
-    reaction(
-      () => this.hasOpenModal,
-      (isOpen) => {
-        if (isOpen) {
-          window.addEventListener('keydown', this.escapeCloseHandler);
+    // Add reaction disposer to the collection
+    this.addDisposer(
+      reaction(
+        () => this.hasOpenModal,
+        (isOpen) => {
+          if (isOpen) {
+            window.addEventListener('keydown', this.escapeCloseHandler);
 
-          // --- Prevent body scroll when modal is open
-          if (typeof document !== 'undefined') {
-            document.body.style.overflow = 'hidden';
-          }
-        } else {
-          window.removeEventListener('keydown', this.escapeCloseHandler);
+            // --- Prevent body scroll when modal is open
+            if (typeof document !== 'undefined') {
+              document.body.style.overflow = 'hidden';
+            }
+          } else {
+            window.removeEventListener('keydown', this.escapeCloseHandler);
 
-          // --- Restore body scroll
-          if (typeof document !== 'undefined') {
-            document.body.style.overflow = '';
+            // --- Restore body scroll
+            if (typeof document !== 'undefined') {
+              document.body.style.overflow = '';
+            }
           }
         }
-      }
+      )
     );
   }
 
@@ -142,10 +147,10 @@ export class UIStore {
 
     window.addEventListener('resize', handleResize);
 
-    // Store cleanup function (can be called in reset or component unmount)
-    (this as any).cleanupResize = () => {
+    // Add event listener cleanup to disposers
+    this.addDisposer(() => {
       window.removeEventListener('resize', handleResize);
-    };
+    });
   }
 
   reset() {
@@ -170,9 +175,9 @@ export class UIStore {
 
   // --- Cleanup method
   cleanup() {
-    if ((this as any).cleanupResize) {
-      (this as any).cleanupResize();
-    }
+    // Dispose all reactions, autoruns, when, and event listeners
+    this.dispose();
+
     this.reset();
   }
 }
