@@ -178,13 +178,18 @@ describe('SearchBar Component', () => {
     expect(mockSearchStore.executeSearch).toHaveBeenCalled();
   });
 
-  it('should trim whitespace from search query', () => {
+  it('should allow whitespace in search query for multi-word searches', () => {
     render(<SearchBar />);
 
     const searchInput = screen.getByPlaceholderText(/search for photos/i);
-    fireEvent.change(searchInput, { target: { value: '  nature  ' } });
 
-    expect(mockSearchStore.setSearchQuery).toHaveBeenCalledWith('nature');
+    // User should be able to type spaces between words
+    fireEvent.change(searchInput, { target: { value: 'night sky' } });
+    expect(mockSearchStore.setSearchQuery).toHaveBeenCalledWith('night sky');
+
+    // Leading/trailing spaces are kept during typing but trimmed during execution
+    fireEvent.change(searchInput, { target: { value: '  nature  ' } });
+    expect(mockSearchStore.setSearchQuery).toHaveBeenCalledWith('  nature  ');
   });
 
   it('should show no results message', () => {

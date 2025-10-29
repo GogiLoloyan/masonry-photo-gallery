@@ -52,8 +52,10 @@ export class SearchStore {
   }
 
   async executeSearch() {
-    if (!this.searchQuery && !this.hasActiveSearch) {
-      // --- If search is cleared, fetch default photos
+    const trimmedQuery = this.searchQuery.trim();
+
+    if (!trimmedQuery) {
+      // --- If search is empty or only whitespace, fetch default photos
       await this.rootStore.photoStore.fetchPhotos(true);
       return;
     }

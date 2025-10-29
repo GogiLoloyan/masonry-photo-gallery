@@ -82,7 +82,7 @@ export class PhotoStore {
     try {
       this.abortController = new AbortController();
 
-      const searchQuery = this.rootStore.searchStore.searchQuery;
+      const searchQuery = this.rootStore.searchStore.searchQuery.trim();
       const response = await pexelsService.getPhotos(
         this.page,
         this.perPage,

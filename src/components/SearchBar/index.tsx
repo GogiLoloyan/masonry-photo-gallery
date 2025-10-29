@@ -10,7 +10,7 @@ const SearchBar = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.trim();
+    const value = e.target.value;
     searchStore.setSearchQuery(value);
   };
 
