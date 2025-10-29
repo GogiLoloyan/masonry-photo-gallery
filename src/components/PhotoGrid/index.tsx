@@ -82,7 +82,7 @@ const PhotoGrid = () => {
         style={{ height: totalHeight, position: 'relative' }}
         data-testid="grid-container"
       >
-        {visibleItems.map((item) => (
+        {visibleItems.map((item, index) => (
           <GridItem
             key={item.photo.id}
             photo={item.photo}
@@ -93,6 +93,7 @@ const PhotoGrid = () => {
               height: item.height,
             }}
             onClick={() => handlePhotoClick(item.photo)}
+            isPriority={index < 3} // First 3 images are priority for LCP
           />
         ))}
       </div>

@@ -14,22 +14,23 @@ interface GridItemProps {
     height: number;
   };
   onClick: () => void;
+  isPriority?: boolean; // First few images should load eagerly for LCP
 }
 
-const GridItem = ({ photo, position, onClick }: GridItemProps) => {
+const GridItem = ({ photo, position, onClick, isPriority = false }: GridItemProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [shouldLoad, setShouldLoad] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(isPriority); // Load immediately if priority
   const [itemRef, isVisible] = useIntersectionObserver<HTMLDivElement>({
     threshold: 0,
     rootMargin: '50px',
   });
 
-  // --- Load image when visible
+  // --- Load image when visible (only if not already loading as priority)
   useEffect(() => {
-    if (isVisible && !shouldLoad) {
+    if (isVisible && !shouldLoad && !isPriority) {
       setShouldLoad(true);
     }
-  }, [isVisible, shouldLoad]);
+  }, [isVisible, shouldLoad, isPriority]);
 
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -84,7 +85,8 @@ const GridItem = ({ photo, position, onClick }: GridItemProps) => {
             alt={photo.alt || `Photo by ${photo.photographer}`}
             className={styles.image}
             onLoad={handleImageLoad}
-            loading="lazy"
+            loading={isPriority ? 'eager' : 'lazy'}
+            fetchPriority={isPriority ? 'high' : 'auto'}
             decoding="async"
             style={{
               opacity: imageLoaded ? 1 : 0,
