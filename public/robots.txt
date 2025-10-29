@@ -1,0 +1,10 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Disallow specific paths if needed
+# Disallow: /api/
+# Disallow: /admin/
+
+# Sitemap location (update with your actual sitemap URL when deployed)
+# Sitemap: https://yourdomain.com/sitemap.xml
