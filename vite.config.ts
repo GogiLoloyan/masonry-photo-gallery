@@ -28,11 +28,17 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
+            // Core React and MobX - needed immediately
             if (id.includes('react') || id.includes('react-dom') || id.includes('mobx')) {
               return 'vendor';
             }
-            if (id.includes('axios') || id.includes('web-vitals')) {
-              return 'utils';
+            // Axios - lazy loaded with first API call
+            if (id.includes('axios')) {
+              return 'axios';
+            }
+            // Web Vitals - lazy loaded, non-critical
+            if (id.includes('web-vitals')) {
+              return 'web-vitals';
             }
           }
         },

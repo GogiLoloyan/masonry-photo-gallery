@@ -1,11 +1,13 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 
 import PhotoGrid from '@/components/PhotoGrid';
-import PhotoModal from '@/components/PhotoModal';
 import SearchBar from '@/components/SearchBar';
 import { useStores } from '@/stores/RootStore';
 
 import * as styles from './styles.css';
+
+// Lazy load PhotoModal since it's only needed when user clicks a photo
+const PhotoModal = lazy(() => import('@/components/PhotoModal'));
 
 const Home: React.FC = () => {
   const { photoStore } = useStores();
@@ -32,7 +34,9 @@ const Home: React.FC = () => {
       <PhotoGrid />
       {/* No Photos */}
       {/* Loading */}
-      <PhotoModal />
+      <Suspense fallback={null}>
+        <PhotoModal />
+      </Suspense>
     </div>
   );
 };
