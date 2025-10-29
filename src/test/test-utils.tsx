@@ -1,6 +1,5 @@
 import { render, type RenderOptions } from '@testing-library/react';
 import type { ReactElement, ReactNode } from 'react';
-import { BrowserRouter } from 'react-router-dom';
 
 import { StoreProvider } from '@/stores/RootStore';
 
@@ -9,11 +8,7 @@ interface AllTheProvidersProps {
 }
 
 export function AllTheProviders({ children }: AllTheProvidersProps) {
-  return (
-    <StoreProvider>
-      <BrowserRouter>{children}</BrowserRouter>
-    </StoreProvider>
-  );
+  return <StoreProvider>{children}</StoreProvider>;
 }
 
 export function renderWithProviders(

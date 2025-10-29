@@ -28,7 +28,7 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom') || id.includes('mobx')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('mobx')) {
               return 'vendor';
             }
             if (id.includes('axios') || id.includes('web-vitals')) {
@@ -40,6 +40,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'mobx', 'mobx-react-lite'],
+    include: ['react', 'react-dom', 'mobx', 'mobx-react-lite'],
   },
 });

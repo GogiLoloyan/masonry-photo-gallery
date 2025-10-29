@@ -22,7 +22,6 @@
     "mobx-react-lite": "^4.1.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.9.4",
     "web-vitals": "^5.1.0"
   },
   "devDependencies": {
@@ -32,7 +31,6 @@
     "@types/node": "^24.6.0",
     "@types/react": "^19.1.16",
     "@types/react-dom": "^19.1.9",
-    "@types/react-router-dom": "^5.3.3",
     "@vanilla-extract/vite-plugin": "^5.1.1",
     "@vitejs/plugin-react": "^5.0.4",
     "@vitest/ui": "^3.2.4",
