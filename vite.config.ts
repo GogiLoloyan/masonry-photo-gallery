@@ -24,6 +24,8 @@ export default defineConfig({
     // Optimize build for performance
     target: 'es2020',
     minify: 'terser',
+    // Enable CSS code splitting for better caching
+    cssCodeSplit: true,
     rollupOptions: {
       output: {
         manualChunks: (id) => {
