@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { BREAKPOINTS } from '@/constants/config';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import type { Photo } from '@/types/app';
-import { getOptimalImageSrc } from '@/utils/image';
 import * as styles from './styles.css';
 
 interface GridItemProps {
@@ -19,7 +18,7 @@ interface GridItemProps {
 
 const GridItem = ({ photo, position, onClick }: GridItemProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageSrc, setImageSrc] = useState<string>('');
+  const [shouldLoad, setShouldLoad] = useState(false);
   const [itemRef, isVisible] = useIntersectionObserver<HTMLDivElement>({
     threshold: 0,
     rootMargin: '50px',
@@ -27,11 +26,10 @@ const GridItem = ({ photo, position, onClick }: GridItemProps) => {
 
   // --- Load image when visible
   useEffect(() => {
-    if (isVisible && !imageSrc) {
-      const optimizedUrl = getOptimalImageSrc(photo.src, itemRef.current?.clientWidth ?? 500);
-      setImageSrc(optimizedUrl);
+    if (isVisible && !shouldLoad) {
+      setShouldLoad(true);
     }
-  }, [isVisible, photo.src, imageSrc]);
+  }, [isVisible, shouldLoad]);
 
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -69,18 +67,20 @@ const GridItem = ({ photo, position, onClick }: GridItemProps) => {
       </div>
 
       {/* Image fades in on top of placeholder */}
-      {imageSrc && (
+      {shouldLoad && (
         <picture>
           <source
-            srcSet={`${photo.src.original} 2x, ${photo.src.large} 1x`}
+            srcSet={`${photo.src.large} 1280w, ${photo.src.original} 1920w`}
+            sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
             media={`(min-width: ${BREAKPOINTS.tablet}px)`}
           />
           <source
-            srcSet={`${photo.src.medium} 1x`}
+            srcSet={`${photo.src.small} 350w, ${photo.src.medium} 650w`}
+            sizes="(min-width: 640px) 50vw, 100vw"
             media={`(max-width: ${BREAKPOINTS.tablet - 1}px)`}
           />
           <img
-            src={imageSrc}
+            src={photo.src.medium}
             alt={photo.alt || `Photo by ${photo.photographer}`}
             className={styles.image}
             onLoad={handleImageLoad}
